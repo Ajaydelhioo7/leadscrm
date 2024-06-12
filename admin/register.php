@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration Form</title>
-    <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
 </head>
 <body>
+    <?php include './includes/header.php'?>
     <div class="container mt-5">
         <h2>Registration Form</h2>
         <form action="register.php" method="post">
