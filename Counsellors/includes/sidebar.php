@@ -1,6 +1,6 @@
 <?php
 // Get the root URL of the website
-$rootUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https://" : "http://") . "lms.99notes.org";
+$rootUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https://" : "http://") . "localhost";
 
 
 // If your application is in a subfolder, append the folder name to the root URL
@@ -33,6 +33,12 @@ $currentFile = basename($_SERVER['PHP_SELF']);
             <a href="../counsellors/dashboard.php">
                 <i class="nc-icon nc-bank"></i>
                 <p>Dashboard</p>
+            </a>
+        </li>
+        <li class="<?= $currentFile == 'followups.php' ? 'active' : '' ?>">
+            <a href="../counsellors/followups.php">
+                <i class="nc-icon nc-bank"></i>
+                <p>Follow Up</p>
             </a>
         </li>
         <li class="<?= $currentFile == 'manage_status.php' ? 'active' : '' ?>">
