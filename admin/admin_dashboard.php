@@ -50,7 +50,7 @@ $statuses_count = $conn->query("SELECT COUNT(*) FROM status")->fetch_row()[0];
                 <div class="card-body">
                     <h5 class="card-title"><?php echo $statuses_count; ?></h5>
                     <p class="card-text">Manage statuses.</p>
-                    <a href="manage_statuses.php" class="btn btn-light">View Details</a>
+                    <a href="manage_status.php" class="btn btn-light">View Details</a>
                 </div>
             </div>
         </div>
@@ -63,11 +63,6 @@ $statuses_count = $conn->query("SELECT COUNT(*) FROM status")->fetch_row()[0];
                     <a href="manage_admins.php" class="btn btn-light">View Details</a>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row mt-5">
-        <div class="col-md-12 text-center">
-            <a href="logout.php" class="btn btn-danger">Logout</a>
         </div>
     </div>
 </div>
