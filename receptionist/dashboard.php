@@ -75,11 +75,11 @@ $centers = $conn->query("SELECT * FROM centers");
 </head>
 <body>
 <?php include './includes/header.php'?>
-
+<h3 class="text-center p-3">Welcome, <?php echo $_SESSION['receptionist_name']; ?></h3>
 <div class="container ">
     <div class="card">
         <div class="card-header">
-            <h3 class="text-center">Welcome, <?php echo $_SESSION['receptionist_name']; ?></h3>
+            
         </div>
         <div class="card-body">
             <h4>Enquiries</h4>

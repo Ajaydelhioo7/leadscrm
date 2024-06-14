@@ -27,7 +27,7 @@ $rootUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https://" 
 $currentFile = basename($_SERVER['PHP_SELF']);
 ?>
 <div class="sidebar-wrapper">
-  <h6 class="ml-3 mt-3">Reception</h6>
+  <h6 class="ml-3 mt-3">Counsellor</h6>
     <ul class="nav" id="sidebarNav">
         <li class="<?= $currentFile == 'dashboard.php' ? 'active' : '' ?>">
             <a href="../counsellors/dashboard.php">
