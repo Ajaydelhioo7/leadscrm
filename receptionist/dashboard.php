@@ -310,6 +310,61 @@ $(document).ready(function() {
     });
 });
 </script>
+<script>
+$(document).ready(function() {
+    function checkNewLeads() {
+        $.ajax({
+            url: 'check_new_leads.php', // URL to the PHP script
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                if (data.new_leads > 0) {
+                    $('#notification-count').text(data.new_leads);
+                } else {
+                    $('#notification-count').text('');
+                }
+            }
+        });
+    }
+
+    function fetchLeadNames() {
+        $.ajax({
+            url: 'get_new_leads.php', // URL to the PHP script that fetches new leads
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                var leadList = $('#lead-list');
+                leadList.empty();
+                if (data.leads.length > 0) {
+                    data.leads.forEach(function(lead) {
+                        leadList.append('<li class="list-group-item">' + lead.student_name + '</li>');
+                    });
+                } else {
+                    leadList.append('<li class="list-group-item">No new leads</li>');
+                }
+
+                // Clear the notification count after viewing
+                $('#notification-count').text('');
+            }
+        });
+    }
+
+    $('#notification-icon').on('click', function() {
+        fetchLeadNames();
+        $('#notificationModal').modal('show');
+    });
+
+    // Check for new leads every 30 seconds
+    setInterval(checkNewLeads, 30000);
+
+    // Initial check on page load
+    checkNewLeads();
+});
+</script>
+
+
+
+
 </body>
 </html>
 <?php
