@@ -153,6 +153,25 @@ $total_pages = ceil($total_records / $limit);
         </div>
     </div>
 </div>
+<!-- Notification Modal -->
+<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notificationModalLabel">New Leads</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul id="lead-list" class="list-group">
+                    <!-- Lead names will be appended here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- Follow-Up Modal -->
 <div class="modal fade" id="followupModal" tabindex="-1" role="dialog" aria-labelledby="followupModalLabel" aria-hidden="true">
@@ -236,6 +255,69 @@ $(document).ready(function() {
     });
 });
 </script>
+<script>
+$(document).ready(function() {
+    function checkNewLeads() {
+        $.ajax({
+            url: 'check_new_leads_counsellor.php', // URL to the PHP script
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                if (data.new_leads > 0) {
+                    $('#notification-count').text(data.new_leads);
+                } else {
+                    $('#notification-count').text('');
+                }
+            }
+        });
+    }
+
+    function fetchLeadNames() {
+        $.ajax({
+            url: 'get_new_leads_counsellor.php', // URL to the PHP script that fetches new leads
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                var leadList = $('#lead-list');
+                leadList.empty();
+                if (data.leads.length > 0) {
+                    data.leads.forEach(function(lead) {
+                        leadList.append('<li class="list-group-item">' + lead.student_name + '</li>');
+                    });
+                } else {
+                    leadList.append('<li class="list-group-item">No new leads</li>');
+                }
+            }
+        });
+    }
+
+    function markLeadsAsSeen() {
+        $.ajax({
+            url: 'mark_leads_as_seen_counsellor.php', // URL to the PHP script that marks leads as seen
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                if (data.status === 'success') {
+                    $('#notification-count').text('');
+                }
+            }
+        });
+    }
+
+    $('#notification-icon').on('click', function() {
+        fetchLeadNames();
+        markLeadsAsSeen();
+        $('#notificationModal').modal('show');
+    });
+
+    // Check for new leads every 30 seconds
+    setInterval(checkNewLeads, 30000);
+
+    // Initial check on page load
+    checkNewLeads();
+});
+</script>
+
 </body>
 </html>
 <?php

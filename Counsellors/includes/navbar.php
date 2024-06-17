@@ -30,7 +30,19 @@
             </form> -->
          
     
-            <a href="logout.php" class="btn btn-danger">Logout</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="notification-icon">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge badge-danger" id="notification-count">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="logout.php">Logout</a>
+            </li>
+        </ul>
+    </div>
            
           </div>
         </div>
