@@ -13,8 +13,5 @@ $row = $result->fetch_assoc();
 // Output the count of new leads as JSON
 echo json_encode(['new_leads' => $row['new_leads']]);
 
-// Update the last checked time in session to the current time
-$_SESSION['last_checked'] = date("Y-m-d H:i:s");
-
 $conn->close();
 ?>

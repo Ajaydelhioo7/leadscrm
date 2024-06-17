@@ -20,7 +20,7 @@ $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
 
 // Order filter
 $order_by = isset($_GET['order_by']) ? $_GET['order_by'] : 'id';
-$order_dir = isset($_GET['order_dir']) ? $_GET['order_dir'] : 'ASC';
+$order_dir = isset($_GET['order_dir']) ? $_GET['order_dir'] : 'DESC'; // Default to descending order
 
 // Fetch all enquiries with filters
 $query = "SELECT * FROM enquiries WHERE (student_name LIKE '%$search%' OR email LIKE '%$search%' OR mob_no LIKE '%$search%')";
@@ -345,6 +345,20 @@ $(document).ready(function() {
 
                 // Clear the notification count after viewing
                 $('#notification-count').text('');
+                markLeadsAsSeen();
+            }
+        });
+    }
+
+    function markLeadsAsSeen() {
+        $.ajax({
+            url: 'mark_leads_as_seen.php', // URL to the PHP script that marks leads as seen
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                if (data.status === 'success') {
+                    $('#notification-count').text('');
+                }
             }
         });
     }
@@ -363,6 +377,24 @@ $(document).ready(function() {
 </script>
 
 
+<!-- Notification Modal -->
+<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notificationModalLabel">New Leads</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul id="lead-list" class="list-group">
+                    <!-- Lead names will be appended here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 </body>
