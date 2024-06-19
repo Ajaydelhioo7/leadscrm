@@ -26,8 +26,8 @@
             border-radius: 1rem 1rem 0 0;
         }
         .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
+            background-color: orange;
+            border-color: orange;
         }
         .btn-primary:hover {
             background-color: #0056b3;
@@ -45,7 +45,7 @@
 <div class="container animate__animated animate__fadeIn">
     <div class="card">
         <div class="card-header text-center">
-            <h2>Enquiry Form 99Notes</h2>
+            <h3>Enquiry Form 99Notes</h3>
         </div>
         <div class="card-body">
             <form action="process_enquiry.php" method="POST">

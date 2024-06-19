@@ -30,7 +30,7 @@ while ($status_row = $status_result->fetch_assoc()) {
 }
 
 // Fetch follow-ups with filters
-$query = "SELECT followups.*, enquiries.student_name, enquiries.email, enquiries.mob_no, enquiries.id AS enquiry_id 
+$query = "SELECT followups.*, enquiries.student_name, enquiries.email, enquiries.mob_no, enquiries.id AS enquiry_id, enquiries.status_id 
           FROM followups 
           JOIN enquiries ON followups.enquiry_id = enquiries.id
           WHERE (enquiries.student_name LIKE '%$search%' OR enquiries.email LIKE '%$search%' OR enquiries.mob_no LIKE '%$search%')";
@@ -137,6 +137,7 @@ $total_pages = ceil($total_records / $limit);
                         <p class="card-text"><strong>Follow-Up Date:</strong> <?php echo htmlspecialchars($row['followup_date']); ?></p>
                         <p class="card-text"><strong>Remarks:</strong> <?php echo nl2br(htmlspecialchars($row['remarks'])); ?></p>
                         <p class="card-text"><small class="text-muted">Created at <?php echo htmlspecialchars($row['created_at']); ?></small></p>
+                        <button class="btn btn-primary edit-status-btn" data-id="<?php echo $row['enquiry_id']; ?>" data-status="<?php echo $row['status_id']; ?>">Edit Status</button>
                     </div>
                 </div>
                 <?php endwhile; ?>
@@ -175,6 +176,40 @@ $total_pages = ceil($total_records / $limit);
     </div>
 </div>
 
+<!-- Edit Status Modal -->
+<div class="modal fade" id="editStatusModal" tabindex="-1" role="dialog" aria-labelledby="editStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editStatusModalLabel">Edit Status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editStatusForm">
+                    <div class="form-group">
+                        <label for="editStatus">Status</label>
+                        <select class="form-control" id="editStatus" name="status_id">
+                            <option value="">Select Status</option>
+                            <?php foreach ($statuses as $status): ?>
+                                <option value="<?php echo $status['id']; ?>">
+                                    <?php echo htmlspecialchars($status['status_name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <input type="hidden" id="editEnquiryId" name="enquiry_id">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveStatusBtn">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script>
@@ -189,6 +224,31 @@ $(document).ready(function() {
             success: function(response) {
                 $('#enquiryDetails').html(response);
                 $('#enquiryModal').modal('show');
+            }
+        });
+    });
+    
+    $('.edit-status-btn').on('click', function() {
+        var enquiryId = $(this).data('id');
+        var statusId = $(this).data('status');
+        
+        $('#editEnquiryId').val(enquiryId);
+        $('#editStatus').val(statusId);
+        $('#editStatusModal').modal('show');
+    });
+    
+    $('#saveStatusBtn').on('click', function() {
+        $.ajax({
+            url: 'update_status.php',
+            type: 'POST',
+            data: $('#editStatusForm').serialize(),
+            success: function(response) {
+                var result = JSON.parse(response);
+                alert(result.message);
+                if (result.success) {
+                    $('#editStatusModal').modal('hide');
+                    location.reload(); // Reload the page to reflect changes
+                }
             }
         });
     });
